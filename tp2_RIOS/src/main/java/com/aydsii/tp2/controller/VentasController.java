@@ -1,4 +1,4 @@
-package com.techstore.controller;
+package com.aydsii.tp2.controller;
 
 import com.techstore.dto.ApiResponse;
 import com.techstore.dto.EstadisticasVentasDTO;
@@ -56,6 +56,33 @@ public class Controller {
                 estadisticas
         );
         //devolucion 200 ok
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Aplicar descuento a las ventas")
+    @PostMapping("/aplicar-descuento")
+    public ResponseEntity<ApiResponse<Object>> aplicarDescuento(
+            @RequestBody @NotEmpty(message = "La lista no puede venir vacía") List<@Valid VentaDTO> ventas,
+            @RequestParam Double porcentaje) {
+
+        //validacion porcentaje
+        if (porcentaje < 0 || porcentaje > 100) {
+            ApiResponse<Object> responseError = new ApiResponse<>(
+                    400, 
+                    "El porcentaje de descuento debe ser un valor entre 0 y 100.", 
+                    null
+            );
+            return ResponseEntity.status(400).body(responseError);
+        }
+
+        //si el porcentaje es valido delego a service
+        ResultadoDescuentoDTO resultado = ventasService.aplicarDescuento(ventas, porcentaje);
+        ApiResponse<Object> response = new ApiResponse<>(
+                200,
+                "Operacion realizada con exito",
+                resultado
+        );
+
         return ResponseEntity.ok(response);
     }
 }

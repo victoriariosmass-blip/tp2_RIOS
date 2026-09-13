@@ -1,4 +1,4 @@
-package com.techstore.exception;
+package com.aydsii.tp2.exception;
 
 import com.techstore.dto.ApiResponse;
 import org.springframework.http.ResponseEntity;

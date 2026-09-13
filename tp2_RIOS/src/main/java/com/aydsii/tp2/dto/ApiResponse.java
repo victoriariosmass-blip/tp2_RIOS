@@ -1,4 +1,4 @@
-package com.techstore.dto;
+package com.aydsii.tp2.dto;
 
 public class ApiResponse<T> {
     private int status;

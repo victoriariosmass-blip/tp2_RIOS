@@ -1,7 +1,9 @@
-package com.techstore.service;
+package com.aydsii.tp2.service;
 
 import com.techstore.dto.EstadisticasVentasDTO;
 import com.techstore.dto.VentaDTO;
+import com.techstore.dto.ResultadoDescuentoDTO; 
+import com.techstore.dto.VentaConDescuentoDTO;  
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -59,5 +61,36 @@ public class VentasService {
         estadisticas.setProductoMasVendido(productoMasVendido);
 
         return estadisticas;
+    }
+
+    //descuento
+    public ResultadoDescuentoDTO aplicarDescuento(List<VentaDTO> ventas, Double porcentaje) {
+        ResultadoDescuentoDTO resultado = new ResultadoDescuentoDTO();
+        
+        //lista para resultdaos
+        java.util.List<VentaConDescuentoDTO> ventasConDescuento = new java.util.ArrayList<>();
+        double total = 0.0;
+
+        for (VentaDTO venta : ventas) {
+            VentaConDescuentoDTO vcd = new VentaConDescuentoDTO();
+            vcd.setProducto(venta.getProducto());
+            vcd.setCantidad(venta.getCantidad());
+            vcd.setPrecioUnitario(venta.getPrecioUnitario());
+
+            //monto original + descuento
+            double montoOriginal = venta.getCantidad() * venta.getPrecioUnitario();
+            double descuentoAplicado = montoOriginal * (porcentaje / 100.0);
+            double montoFinal = montoOriginal - descuentoAplicado;
+            
+            vcd.setMontoConDescuento(montoFinal);
+            
+            ventasConDescuento.add(vcd);
+            total += montoFinal;
+        }
+
+        resultado.setVentas(ventasConDescuento);
+        resultado.setTotalConDescuento(total);
+        
+        return resultado;
     }
 }

@@ -1,4 +1,4 @@
-package com.techstore.dto;
+package com.aydsii.tp2.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
