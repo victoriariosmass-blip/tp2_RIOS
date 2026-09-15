@@ -52,7 +52,7 @@ public class Controller {
             //rta estandar
             ApiResponse<EstadisticasVentasDTO> response = new ApiResponse<>(
                 200,
-                "Operacion realizada con exito", // Sin tilde, calcado a como está en la consigna
+                "Operacion realizada con exito", 
                 estadisticas
         );
         //devolucion 200 ok
@@ -62,7 +62,8 @@ public class Controller {
     @Operation(summary = "Aplicar descuento a las ventas")
     @PostMapping("/aplicar-descuento")
     public ResponseEntity<ApiResponse<Object>> aplicarDescuento(
-            @RequestBody @NotEmpty(message = "La lista no puede venir vacía") List<@Valid VentaDTO> ventas,
+            @RequestBody 
+            @NotEmpty(message = "La lista no puede venir vacía") List<@Valid VentaDTO> ventas,
             @RequestParam Double porcentaje) {
 
         //validacion porcentaje
