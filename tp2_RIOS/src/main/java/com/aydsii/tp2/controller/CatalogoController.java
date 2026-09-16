@@ -46,4 +46,31 @@ public class CatalogoController {
 
         return ResponseEntity.ok(response);
     }
+
+    @Operation(summary = "Buscar y filtrar productos")
+    @GetMapping("/buscar")
+    public ResponseEntity<ApiResponse<List<ProductoDTO>>> buscarCatalogo{
+        //parametros opcionales
+        @RequestParam(required = false) String categoria,
+        @RequestParam(required = false) Double precioMin,
+        @RequestParam(required = false) Double precioMax
+    }{
+        //llamada al metodo del service
+        List<Producto> productosFiltrados = catalogoService.buscarProductos(categoria, precioMin, precioMax);
+
+        //convertir a DTOs
+        List<ProductoDTO> productosDTO = new ArrayList<>();
+        for (Producto p : productosFiltrados){
+            productosDTO.add(new ProductoDTO(p.getId(), p.getNombre(), p.getCategoria(), p.getPrecio(), p.getStock()))
+        }
+
+        //respuesta
+        ApiResponse<List<ProductoDTO>> response = new ApiResponse<>(
+                200,
+                "Busqueda realizada con exito",
+                productosDTO
+        );
+
+        return ResponseEntity.ok(response);
+    }
 }

@@ -27,4 +27,17 @@ public class CatalogoService {
     public List<Producto> obtenerTodos() {
         return productos;
     }
+
+    //metodo para el GET /api/catalogo/buscar?
+    public list<Producto> buscarProductos(String categoria, double precioMin, double precioMax){
+        return productos.stream(
+            // ==null por si no llegan todos los parametros de filtro
+            .filter(p -> categoria == null || p.getCategoria().equalsIgnoreCase(categoria));
+            .filter(p -> precioMin == null || p.getPrecio() >= precioMin);
+            .filter(p -> precioMax == null || p.getPrecio() <= precioMax);
+
+            //convertir el filtrado en lista nuevamente
+            .toList();
+        )
+    }
 }
