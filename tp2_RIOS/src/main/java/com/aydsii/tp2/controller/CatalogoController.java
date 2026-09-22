@@ -155,4 +155,18 @@ public class CatalogoController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "Eliminar producto del catalogo")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> eliminarProducto(@PathVariable Long id){
+        //eliminacion a cargo del service
+        catalogoService.eliminarProducto(id);
+
+        //response
+        ApiResponse<Void> response = new ApiResponse<>(
+                200,
+                "Producto eliminado con exito",
+                null
+        );
+        return ResponseEntity.ok(response);
+    }
 }

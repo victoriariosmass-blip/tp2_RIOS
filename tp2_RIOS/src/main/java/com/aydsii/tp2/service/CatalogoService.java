@@ -98,4 +98,15 @@ public class CatalogoService {
         //respuesta
         return producto;
     }
+
+    //metodo para DELETE /api/catalogo/{id}
+    public void eliminarProducto(Long id){
+        Producto producto = productos.stream()
+            .filter(p -> p.getId().equals(id))
+            .findFirst()
+            .orElseThrow(()-> new com.aydsii.tp2.exception.ProductoNotFoundException("No se encontró el producto con ID: " + id));
+    
+        //eliminar
+        productos.remove(producto);
+    }
 }
