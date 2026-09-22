@@ -1,5 +1,6 @@
 package com.aydsii.tp2.service;
 
+import com.aydsii.tp2.dto.ProductoDTO;
 import com.aydsii.tp2.model.Producto;
 import org.springframework.stereotype.Service;
 
@@ -8,8 +9,7 @@ import java.util.List;
 
 @Service
 public class CatalogoService {
-    //lista de productos 
-    private List<Productos> productos = new ArrayList<>();
+    private List<Producto> productos = new ArrayList<>();
 
     //carga productos ejemplo
     public CatalogoService() {
@@ -23,21 +23,62 @@ public class CatalogoService {
         productos.add(new Producto(8L, "Fuente 650W", "Componentes", 55000.0, 25));
     }
 
-    //metodo para el get /api/catalogo
+    //metodo para GET /api/catalogo
     public List<Producto> obtenerTodos() {
         return productos;
     }
 
-    //metodo para el GET /api/catalogo/buscar?
-    public list<Producto> buscarProductos(String categoria, double precioMin, double precioMax){
-        return productos.stream(
-            // ==null por si no llegan todos los parametros de filtro
-            .filter(p -> categoria == null || p.getCategoria().equalsIgnoreCase(categoria));
-            .filter(p -> precioMin == null || p.getPrecio() >= precioMin);
-            .filter(p -> precioMax == null || p.getPrecio() <= precioMax);
-
-            //convertir el filtrado en lista nuevamente
+    //metodo para GET /api/catalogo/buscar?
+    public List<Producto> buscarProductos(String categoria, Double precioMin, Double precioMax){
+        return productos.stream() 
+            .filter(p -> categoria == null || p.getCategoria().equalsIgnoreCase(categoria))
+            .filter(p -> precioMin == null || p.getPrecio() >= precioMin)
+            .filter(p -> precioMax == null || p.getPrecio() <= precioMax)
+            //filtrado a lista
             .toList();
-        )
+    }
+
+    //metodo para GET /api/catalogo/ordenar
+    public List<Producto> ordenarProductos(String criterio, String orden){
+        java.util.Comparator<Producto> comparador = java.util.Comparator.comparing(Producto::getId);
+
+        if ("precio".equalsIgnoreCase(criterio)) {
+            comparador = java.util.Comparator.comparing(Producto::getPrecio);
+        } else if ("nombre".equalsIgnoreCase(criterio)) {
+            comparador = java.util.Comparator.comparing(Producto::getNombre);
+        }
+
+        if ("desc".equalsIgnoreCase(orden)) {
+            comparador = comparador.reversed(); //invertir orden del comparador
+        }
+
+        return productos.stream()
+                .sorted(comparador)
+                .toList();
+    }
+
+    //metodo para POST /api/catalogo
+    public Producto agregarProducto(ProductoDTO dto) {
+        
+        //se busca el ID más alto que haya en la lista y sumamos 1
+        long nuevoId = productos.stream()
+                .mapToLong(Producto::getId)
+                .max()
+                .orElse(0L) + 1;
+
+        //convertir dto en model
+        Producto nuevoProducto = new Producto(
+                nuevoId, 
+                dto.getNombre(), 
+                dto.getCategoria(), 
+                dto.getPrecio(), 
+                dto.getStock()
+        );
+
+        //guardar en lista
+        productos.add(nuevoProducto);
+
+        //respuesta
+        return nuevoProducto;
     }
 }

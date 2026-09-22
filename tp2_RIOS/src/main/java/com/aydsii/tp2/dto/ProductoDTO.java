@@ -1,15 +1,30 @@
 package com.aydsii.tp2.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class ProductoDTO {
-    private long id;
+    private Long id;
+    
+    @NotBlank(message = "El nombre del producto no puede estar vacio")
     private String nombre;
+    
+    @NotBlank(message = "La categoria del producto no puede estar vacia")
     private String categoria;
-    private double precio;
-    private int stock;
+    
+    @NotNull(message = "El precio es obligatorio")
+    @Positive(message = "El precio debe ser mayor a 0")
+    private Double precio;
+    
+    @NotNull(message = "El stock es obligatorio")
+    @Min(value = 0, message = "El stock no puede ser negativo")
+    private Integer stock;
 
     public ProductoDTO(){}
 
-    public ProductoDTO(long id, String nombre, String categoria, double precio, int stock){
+    public ProductoDTO(Long id, String nombre, String categoria, Double precio, Integer stock){
         this.id = id;
         this.nombre = nombre;
         this.categoria = categoria;
@@ -17,7 +32,7 @@ public class ProductoDTO {
         this.stock = stock;
     }
 
-    //getters, setters
+    // getters, setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

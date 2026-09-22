@@ -1,9 +1,10 @@
 package com.aydsii.tp2.controller;
 
-import com.techstore.dto.ApiResponse;
-import com.techstore.dto.EstadisticasVentasDTO;
-import com.techstore.dto.VentaDTO;
-import com.techstore.service.VentasService;
+import com.aydsii.tp2.dto.ApiResponse;
+import com.aydsii.tp2.dto.EstadisticasVentasDTO;
+import com.aydsii.tp2.dto.VentaDTO;
+import com.aydsii.tp2.dto.ResultadoDescuentoDTO;
+import com.aydsii.tp2.service.VentasService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -17,19 +18,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/ventas")
 @Validated
-public class Controller {
-    private final VentasService VentasService;
+public class VentasController { 
+    private final VentasService ventasService;
 
     //constructor con inyeccion de dependencia
-    public VentasController(VentasService ventasService) {
+    public VentasController(VentasService ventasService) { 
         this.ventasService = ventasService;
     }
 
     //doc swagger
     @Operation(
             summary = "Calcular estadísticas de ventas",
-            description = "Recibe un lote de ventas y devuelve cálculos como el total 
-            facturado, ticket promedio, venta mayor y menor, y producto más vendido."
+            description = "Recibe un lote de ventas y devuelve cálculos como el total facturado, ticket promedio, venta mayor y menor, y producto más vendido."
     )
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(

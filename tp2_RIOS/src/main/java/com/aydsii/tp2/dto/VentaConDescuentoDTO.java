@@ -26,7 +26,7 @@ public class VentaConDescuentoDTO {
 
     public Double getPrecioUnitario() { 
         return precioUnitario; 
-    
+    }
     public void setPrecioUnitario(Double precioUnitario) { 
         this.precioUnitario = precioUnitario; 
     }

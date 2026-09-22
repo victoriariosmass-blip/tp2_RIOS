@@ -1,9 +1,9 @@
 package com.aydsii.tp2.service;
 
-import com.techstore.dto.EstadisticasVentasDTO;
-import com.techstore.dto.VentaDTO;
-import com.techstore.dto.ResultadoDescuentoDTO; 
-import com.techstore.dto.VentaConDescuentoDTO;  
+import com.aydsii.tp2.dto.EstadisticasVentasDTO;
+import com.aydsii.tp2.dto.VentaDTO;
+import com.aydsii.tp2.dto.ResultadoDescuentoDTO; 
+import com.aydsii.tp2.dto.VentaConDescuentoDTO;  
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
