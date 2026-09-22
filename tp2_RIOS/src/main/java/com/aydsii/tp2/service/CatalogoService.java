@@ -74,11 +74,28 @@ public class CatalogoService {
                 dto.getPrecio(), 
                 dto.getStock()
         );
-
         //guardar en lista
         productos.add(nuevoProducto);
-
         //respuesta
         return nuevoProducto;
+    }
+
+    //metodo para PUT /api/catalogo/{id}/stock?cantidad
+    public Producto descontarStock(Long id, Integer cantidad){
+        //buscar producto o lanzar excepcion
+        Producto producto = productos.stream()
+            .filter(p -> p.getId().equals(id))
+            .findFirst()
+            .orElseThrow(()-> new com.aydsii.tp2.exception.ProductoNotFoundException("No se encontró el producto con ID: " + id));
+        
+        //validar cantidad de stock
+        if(producto.getStock() < cantidad){
+            throw new IllegalArgumentException("Stock insuficiente. Stock actual: " + producto.getStock());
+        }
+
+        //modificar cantidad
+        producto.setStock(producto.getStock() - cantidad);
+        //respuesta
+        return producto;
     }
 }

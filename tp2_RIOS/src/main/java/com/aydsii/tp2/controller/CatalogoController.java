@@ -126,4 +126,33 @@ public class CatalogoController {
 
         return ResponseEntity.status(201).body(response);
     }
+
+    @Operation(summary = "Modificar el stock de un producto")
+    @PutMapping("{id}/stock")
+    public ResponseEntity<ApiResponse<ProductoDTO>> descontarStock(
+        @PathVariable Long id,
+        @RequestParam @jakarta.validation.constraints.Positive(message = "La cantidad a descontar debe ser mayor a cero") Integer cantidad
+    ){
+        //busqueda y resta la hace el service
+        Producto productoActualizado = catalogoService.descontarStock(id, cantidad);
+
+        //model a DTO
+        ProductoDTO responseDTO = new ProductoDTO(
+            productoActualizado.getId(),
+            productoActualizado.getNombre(),
+            productoActualizado.getCategoria(),
+            productoActualizado.getPrecio(),
+            productoActualizado.getStock()
+        );
+
+        //response
+        ApiResponse<ProductoDTO> response = new ApiResponse<>(
+                200,
+                "Stock actualizado con exito",
+                responseDTO
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -31,4 +31,15 @@ public class GlobalExceptionHandler {
         ApiResponse<Void> response = new ApiResponse<>(404, ex.getMessage(), null);
         return ResponseEntity.status(404).body(response); 
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
+        
+        ApiResponse<Void> response = new ApiResponse<>(
+                400, // bad request
+                ex.getMessage(), // stock insuficiente
+                null 
+        );
+        return ResponseEntity.status(400).body(response);
+    }
 }
