@@ -5,9 +5,9 @@ import com.aydsii.tp2.dto.ProductoDTO;
 import com.aydsii.tp2.model.Producto;
 import com.aydsii.tp2.service.CatalogoService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid; // Import necesario para validar
+import jakarta.validation.Valid; 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*; // El asterisco importa GetMapping, PostMapping, RequestParam, etc.
+import org.springframework.web.bind.annotation.*; 
 
 import java.util.ArrayList;
 import java.util.List;

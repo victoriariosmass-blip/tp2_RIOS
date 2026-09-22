@@ -42,4 +42,27 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(400).body(response);
     }
+
+    //divisas excepciones para api frankfurter
+    @ExceptionHandler(MonedaNoSoportadaException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMonedaNoSoportada(MonedaNoSoportadaException ex) {
+        
+        ApiResponse<Void> response = new ApiResponse<>(
+                400, //bad Request
+                ex.getMessage(), 
+                null
+        );
+        return ResponseEntity.status(400).body(response);
+    }
+
+    @ExceptionHandler(ExternalApiConnectionException.class)
+    public ResponseEntity<ApiResponse<Void>> handleExternalApiConnection(ExternalApiConnectionException ex) {
+        
+        ApiResponse<Void> response = new ApiResponse<>(
+                502, //bad Gateway
+                ex.getMessage(), 
+                null
+        );
+        return ResponseEntity.status(502).body(response);
+    }
 }
