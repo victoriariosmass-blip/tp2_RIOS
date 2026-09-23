@@ -7,6 +7,7 @@ import com.aydsii.tp2.service.ClienteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid; 
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -17,8 +18,25 @@ public class ClienteController{
         this.clienteService = clienteService;
     }
 
+    //alta de cliente simple
     @PostMapping
     public ResponseEntity<ApiResponse<Cliente>> registrarClienteSimple(@RequestBody ClienteDTO clienteDTO){
+        //dto al service
+        Cliente clienteCreado = clienteService.registrarCliente(clienteDTO);
+
+        //response
+        ApiResponse<Cliente> response = new ApiResponse<>(
+            201,
+            "Cliente registrado con éxito",
+            clienteCreado //se devuelve la entidad creada que va a tener su id generado por la bd
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    // alta de cliente validado, igual al anterior pero con @valid al dto
+    @PostMapping("/validado")
+    public ResponseEntity<ApiResponse<Cliente>> registrarClienteValidado(@Valid @RequestBody ClienteDTO clienteDTO){
         //dto al service
         Cliente clienteCreado = clienteService.registrarCliente(clienteDTO);
 

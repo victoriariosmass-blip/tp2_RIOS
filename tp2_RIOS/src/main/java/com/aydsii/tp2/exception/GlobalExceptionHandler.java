@@ -10,20 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Void>> manejarErrorValidacion(MethodArgumentNotValidException ex) {
-        
-        FieldError error = ex.getBindingResult().getFieldErrors().get(0);
-        String campoYPosicion = error.getField(); 
-        String motivo = error.getDefaultMessage();
-        
-        String mensajeFinal = "Error de validación en " + campoYPosicion + ": " + motivo;
-        
-        ApiResponse<Void> response = new ApiResponse<>(400, mensajeFinal, null);
-        
-        return ResponseEntity.status(400).body(response);
-    }
-
     //recursos no encontrados
     @ExceptionHandler(ProductoNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> manejarProductoNoEncontrado(ProductoNotFoundException ex) {
@@ -64,5 +50,22 @@ public class GlobalExceptionHandler {
                 null
         );
         return ResponseEntity.status(502).body(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        
+        //obtenemos el primer error en la lista de validaciones que fallaron
+        FieldError primerError = ex.getBindingResult().getFieldErrors().get(0);
+        
+        //extraemos el mensaje del DTO 
+        String mensajeError = primerError.getDefaultMessage();
+
+        ApiResponse<Void> response = new ApiResponse<>(
+                400, 
+                mensajeError, 
+                null
+        );
+        return ResponseEntity.status(400).body(response);
     }
 }
